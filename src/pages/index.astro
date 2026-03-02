@@ -1,50 +1,393 @@
 ---
-import BaseHead from '../components/BaseHead.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+const title = "인공지능 닥터 홈페이지에 오신 걸 환영합니다";
+const tagline = "AIDoctor.io — 의료 지식과 AI를 연결하는 실험실";
 ---
 
-<!doctype html>
-<html lang="en">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-	</head>
-	<body>
-		<Header />
-		<main>
-			<h1>🧑‍🚀 Hello, Astronaut!</h1>
-			<p>
-				Welcome to the official <a href="https://astro.build/">Astro</a> blog starter template. This
-				template serves as a lightweight, minimally-styled starting point for anyone looking to build
-				a personal website, blog, or portfolio with Astro.
-			</p>
-			<p>
-				This template comes with a few integrations already configured in your
-				<code>astro.config.mjs</code> file. You can customize your setup with
-				<a href="https://astro.build/integrations">Astro Integrations</a> to add tools like Tailwind,
-				React, or Vue to your project.
-			</p>
-			<p>Here are a few ideas on how to get started with the template:</p>
-			<ul>
-				<li>Edit this page in <code>src/pages/index.astro</code></li>
-				<li>Edit the site header items in <code>src/components/Header.astro</code></li>
-				<li>Add your name to the footer in <code>src/components/Footer.astro</code></li>
-				<li>Check out the included blog posts in <code>src/content/blog/</code></li>
-				<li>Customize the blog post page layout in <code>src/layouts/BlogPost.astro</code></li>
-			</ul>
-			<p>
-				Have fun! If you get stuck, remember to <a href="https://docs.astro.build/"
-					>read the docs
-				</a> or <a href="https://astro.build/chat">join us on Discord</a> to ask questions.
-			</p>
-			<p>
-				Looking for a blog template with a bit more personality? Check out <a
-					href="https://github.com/Charca/astro-blog-template"
-					>astro-blog-template
-				</a> by <a href="https://twitter.com/Charca">Maxi Ferreira</a>.
-			</p>
-		</main>
-		<Footer />
-	</body>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+
+    <style>
+      :root{
+        --bg:#ffffff;
+        --text:#111827;
+        --muted:#6b7280;
+        --line:#e5e7eb;
+        --card:#ffffff;
+        --shadow: 0 10px 30px rgba(0,0,0,.06);
+        --shadow2: 0 6px 18px rgba(0,0,0,.05);
+        --radius: 18px;
+      }
+      *{box-sizing:border-box;}
+      body{
+        margin:0;
+        background:var(--bg);
+        color:var(--text);
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Noto Sans KR", Arial, sans-serif;
+        line-height:1.6;
+      }
+      a{color:inherit; text-decoration:none;}
+      .wrap{
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 28px 18px 80px;
+      }
+      .nav{
+        position: sticky;
+        top: 0;
+        backdrop-filter: blur(10px);
+        background: rgba(255,255,255,.75);
+        border-bottom: 1px solid rgba(229,231,235,.7);
+        z-index: 10;
+      }
+      .navInner{
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 12px 18px;
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap:12px;
+      }
+      .brand{
+        display:flex; align-items:center; gap:10px;
+        font-weight: 700;
+        letter-spacing: -.2px;
+      }
+      .dot{
+        width:10px; height:10px; border-radius:999px;
+        background: #111827;
+        box-shadow: 0 0 0 3px rgba(17,24,39,.08);
+      }
+      .navLinks{
+        display:flex; gap:14px; align-items:center;
+        color: var(--muted);
+        font-size: 14px;
+      }
+      .navLinks a{
+        padding: 8px 10px;
+        border-radius: 10px;
+      }
+      .navLinks a:hover{
+        background: rgba(17,24,39,.05);
+        color: var(--text);
+      }
+
+      .hero{
+        padding: 44px 0 26px;
+      }
+      .kicker{
+        display:inline-flex;
+        align-items:center;
+        gap:8px;
+        font-size: 13px;
+        color: var(--muted);
+        padding: 6px 10px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: #fff;
+        box-shadow: var(--shadow2);
+      }
+      .kicker span{
+        width:6px; height:6px; border-radius:999px; background:#10b981;
+      }
+      h1{
+        margin: 14px 0 10px;
+        font-size: clamp(28px, 4vw, 44px);
+        line-height:1.15;
+        letter-spacing: -0.8px;
+      }
+      .tagline{
+        margin: 0 0 18px;
+        color: var(--muted);
+        font-size: 16px;
+        max-width: 72ch;
+      }
+      .ctaRow{
+        display:flex;
+        flex-wrap:wrap;
+        gap:10px;
+        margin-top: 18px;
+      }
+      .btn{
+        display:inline-flex;
+        align-items:center;
+        justify-content:center;
+        gap:10px;
+        padding: 10px 14px;
+        border-radius: 12px;
+        border: 1px solid var(--line);
+        background:#fff;
+        box-shadow: var(--shadow2);
+        font-size: 14px;
+        cursor:pointer;
+      }
+      .btn:hover{transform: translateY(-1px);}
+      .btnPrimary{
+        background:#111827;
+        color:#fff;
+        border-color:#111827;
+      }
+      .btnPrimary:hover{opacity:.95;}
+      .grid{
+        display:grid;
+        grid-template-columns: 1.2fr .8fr;
+        gap: 16px;
+        margin-top: 22px;
+      }
+      @media (max-width: 860px){
+        .grid{grid-template-columns: 1fr;}
+      }
+      .card{
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        padding: 18px;
+      }
+      .card h2{
+        margin:0 0 10px;
+        font-size: 16px;
+        letter-spacing: -.2px;
+      }
+      .card p{margin:0; color: var(--muted); font-size: 14px;}
+      .list{
+        margin: 10px 0 0;
+        padding: 0;
+        list-style: none;
+        display:flex;
+        flex-direction:column;
+        gap:10px;
+      }
+      .item{
+        display:flex;
+        gap:10px;
+        align-items:flex-start;
+        padding: 12px;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: #fff;
+      }
+      .badge{
+        flex: 0 0 auto;
+        width: 28px; height: 28px;
+        border-radius: 10px;
+        display:grid;
+        place-items:center;
+        background: rgba(17,24,39,.06);
+        border: 1px solid rgba(17,24,39,.08);
+        font-weight: 700;
+        font-size: 12px;
+        color:#111827;
+      }
+      .item strong{display:block; font-size: 14px; margin-bottom: 2px;}
+      .item small{display:block; color: var(--muted); font-size: 13px; line-height:1.45;}
+
+      .section{
+        margin-top: 18px;
+      }
+      .sectionTitle{
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap:10px;
+        margin-bottom: 10px;
+      }
+      .sectionTitle h3{
+        margin:0;
+        font-size: 14px;
+        color: var(--text);
+        letter-spacing: -.2px;
+      }
+      .pill{
+        font-size: 12px;
+        color: var(--muted);
+        border:1px solid var(--line);
+        padding: 6px 10px;
+        border-radius: 999px;
+        background:#fff;
+      }
+
+      .footer{
+        margin-top: 26px;
+        color: var(--muted);
+        font-size: 13px;
+        border-top: 1px solid var(--line);
+        padding-top: 16px;
+      }
+
+      /* Notion-ish “page” feeling */
+      .pageLine{
+        margin-top: 18px;
+        border-top: 1px dashed rgba(229,231,235,.9);
+      }
+      .mono{
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+        font-size: 12px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="nav">
+      <div class="navInner">
+        <div class="brand">
+          <span class="dot"></span>
+          <span>AIDoctor</span>
+        </div>
+        <div class="navLinks">
+          <a href="/">Home</a>
+          <a href="/blog">Blog</a>
+          <a href="/about">About</a>
+        </div>
+      </div>
+    </div>
+
+    <main class="wrap">
+      <section class="hero">
+        <div class="kicker"><span></span> Live Lab • 의료 + AI • 작은 실험을 빠르게</div>
+        <h1>{title}</h1>
+        <p class="tagline">{tagline}</p>
+
+        <div class="ctaRow">
+          <a class="btn btnPrimary" href="/blog">📚 연구/기록 보러가기</a>
+          <a class="btn" href="#vision">🧭 비전 보기</a>
+          <a class="btn" href="#roadmap">🧩 로드맵</a>
+        </div>
+      </section>
+
+      <div class="grid">
+        <section class="card" id="vision">
+          <h2>비전</h2>
+          <p>
+            “인공지능 닥터”는 단순한 챗봇이 아니라, <b>근거 기반(evidence-based)</b>으로
+            질문을 해석하고, <b>불확실성을 표시</b>하며, <b>안전한 한계</b> 안에서
+            사용자를 돕는 시스템을 목표로 합니다.
+          </p>
+
+          <div class="pageLine"></div>
+
+          <div class="section">
+            <div class="sectionTitle">
+              <h3>우리가 만들고 싶은 것</h3>
+              <span class="pill">원칙 4가지</span>
+            </div>
+            <ul class="list">
+              <li class="item">
+                <div class="badge">1</div>
+                <div>
+                  <strong>정확성 + 근거</strong>
+                  <small>답변은 “그럴듯함”이 아니라, 근거와 출처 흐름을 우선합니다. 모르는 건 모른다고 말합니다.</small>
+                </div>
+              </li>
+              <li class="item">
+                <div class="badge">2</div>
+                <div>
+                  <strong>안전한 경계</strong>
+                  <small>진단/처방을 흉내내기보다, 위험 신호를 분류하고 다음 행동(내원/응급/관찰)을 안내합니다.</small>
+                </div>
+              </li>
+              <li class="item">
+                <div class="badge">3</div>
+                <div>
+                  <strong>개인화된 설명</strong>
+                  <small>사용자 수준(초등 5학년 톤부터 전문가 톤까지)과 맥락에 맞춰 “이해 가능한 말”로 번역합니다.</small>
+                </div>
+              </li>
+              <li class="item">
+                <div class="badge">4</div>
+                <div>
+                  <strong>실험 가능한 제품</strong>
+                  <small>작게 만들고, 빨리 배포하고, 로그로 검증하며 개선합니다. 이 사이트가 그 실험실입니다.</small>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <aside class="card" id="roadmap">
+          <h2>로드맵 (실전형)</h2>
+          <p>오늘부터 “지식 → 실전”으로 바꾸는 작업을 기록합니다.</p>
+
+          <div class="section">
+            <div class="sectionTitle">
+              <h3>Phase 0</h3>
+              <span class="pill mono">Now</span>
+            </div>
+            <ul class="list">
+              <li class="item">
+                <div class="badge">A</div>
+                <div>
+                  <strong>홈페이지/블로그 수정 루틴 만들기</strong>
+                  <small>GitHub 커밋 → Cloudflare 빌드 → 배포 확인까지 손에 익히기</small>
+                </div>
+              </li>
+              <li class="item">
+                <div class="badge">B</div>
+                <div>
+                  <strong>AI 실험 페이지 만들기</strong>
+                  <small>버튼 → API 요청 → 응답 표시(우선은 더미 응답부터)</small>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div class="section">
+            <div class="sectionTitle">
+              <h3>Phase 1</h3>
+              <span class="pill">검색 + 근거</span>
+            </div>
+            <ul class="list">
+              <li class="item">
+                <div class="badge">1</div>
+                <div>
+                  <strong>의학 Q&A: 근거 링크 구조</strong>
+                  <small>질문 → 관련 근거 요약 → “왜 그렇게 말했는지”를 추적 가능하게</small>
+                </div>
+              </li>
+              <li class="item">
+                <div class="badge">2</div>
+                <div>
+                  <strong>안전 가드레일</strong>
+                  <small>레드플래그 탐지, 응급/내원/자가관리 분기</small>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div class="section">
+            <div class="sectionTitle">
+              <h3>Phase 2</h3>
+              <span class="pill">워크플로우</span>
+            </div>
+            <ul class="list">
+              <li class="item">
+                <div class="badge">3</div>
+                <div>
+                  <strong>진료 워크플로우 보조</strong>
+                  <small>문진 정리 → 요약 → 의심 가설 → 다음 질문 제안</small>
+                </div>
+              </li>
+              <li class="item">
+                <div class="badge">4</div>
+                <div>
+                  <strong>지속 개선 루프</strong>
+                  <small>사용 로그(익명/비식별) 기반으로 실패 케이스를 모아 개선</small>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+
+      <div class="footer">
+        <div class="mono">Last updated: {new Date().toISOString().slice(0, 10)}</div>
+        <div style="margin-top:8px;">
+          이 사이트의 내용은 교육/연구 목적이며, 의료적 판단은 전문가와 상의하세요.
+        </div>
+      </div>
+    </main>
+  </body>
 </html>
