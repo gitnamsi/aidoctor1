@@ -1,0 +1,72 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+---
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <BaseHead title={`${SITE_TITLE} · Lab`} description={SITE_DESCRIPTION} />
+    <style>
+      main{max-width:900px;margin:60px auto;padding:0 20px;line-height:1.7;}
+      .row{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0;}
+      input{flex:1;min-width:240px;padding:12px 14px;border:1px solid #e5e7eb;border-radius:12px;font-size:16px;}
+      button{padding:12px 14px;border-radius:12px;border:1px solid #e5e7eb;background:#111827;color:white;cursor:pointer;}
+      button:disabled{opacity:.6;cursor:not-allowed;}
+      pre{white-space:pre-wrap;background:#f5f5f5;padding:14px;border-radius:14px;border:1px solid #eee;}
+      small{color:#6b7280;}
+    </style>
+  </head>
+  <body>
+    <Header />
+    <main>
+      <h1 style="font-size:34px;letter-spacing:-.6px;margin-bottom:6px;">AI Lab</h1>
+      <small>목표: 버튼 → /api/chat → 응답 표시 (오늘은 더미 응답으로 연결부터)</small>
+
+      <div class="row">
+        <input id="q" placeholder="질문 입력 (예: skin in the game 뜻?)" />
+        <button id="btn">질문하기</button>
+      </div>
+
+      <pre id="out">여기에 응답이 표시됩니다.</pre>
+
+      <script>
+        const q = document.getElementById("q");
+        const btn = document.getElementById("btn");
+        const out = document.getElementById("out");
+
+        async function ask(){
+          const message = q.value.trim();
+          if(!message){ out.textContent = "질문을 입력해줘 🙂"; q.focus(); return; }
+
+          btn.disabled = true;
+          out.textContent = "요청 중...";
+
+          try{
+            const res = await fetch("/api/chat", {
+              method: "POST",
+              headers: { "content-type": "application/json" },
+              body: JSON.stringify({ message })
+            });
+            const text = await res.text();
+            out.textContent = `HTTP ${res.status}\n\n${text}`;
+          }catch(e){
+            out.textContent = "에러: " + (e?.message ?? e);
+          }finally{
+            btn.disabled = false;
+          }
+        }
+
+        btn.addEventListener("click", ask);
+        q.addEventListener("keydown", (e)=>{ if(e.key==="Enter") ask(); });
+      </script>
+
+      <div style="margin-top:18px;">
+        <a href="/" style="color:#111827;text-decoration:underline;">← 홈으로</a>
+      </div>
+    </main>
+    <Footer />
+  </body>
+</html>
