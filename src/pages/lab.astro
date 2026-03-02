@@ -61,6 +61,13 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 
         btn.addEventListener("click", ask);
         q.addEventListener("keydown", (e)=>{ if(e.key==="Enter") ask(); });
+const params = new URLSearchParams(window.location.search);
+const preset = params.get("q");
+
+if (preset) {
+  q.value = preset;
+  setTimeout(() => ask(), 0);
+}
       </script>
 
       <div style="margin-top:18px;">
